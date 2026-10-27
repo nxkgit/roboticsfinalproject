@@ -1,0 +1,5 @@
+# shapes/circle.yaml — one full counter-clockwise circle about the origin
+name: circle
+start: [0.0, -1.0]
+segments:
+  - {type: arc, center: [0.0, 0.0], sweep_deg: 360}

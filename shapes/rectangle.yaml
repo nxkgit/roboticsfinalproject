@@ -1,0 +1,8 @@
+# shapes/rectangle.yaml — 2:1 rectangle
+name: rectangle
+start: [0.0, 0.0]
+segments:
+  - {type: line, to: [1.0, 0.0]}
+  - {type: line, to: [1.0, 0.5]}
+  - {type: line, to: [0.0, 0.5]}
+  - {type: line, to: [0.0, 0.0]}

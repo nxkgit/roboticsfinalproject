@@ -1,0 +1,8 @@
+# shapes/square.yaml — the reference example; copy this structure
+name: square
+start: [0.0, 0.0]                  # first point; robot transits here from its start pose
+segments:
+  - {type: line, to: [1.0, 0.0]}
+  - {type: line, to: [1.0, 1.0]}
+  - {type: line, to: [0.0, 1.0]}
+  - {type: line, to: [0.0, 0.0]}   # closed shape: last point == start
