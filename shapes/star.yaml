@@ -1,0 +1,15 @@
+# shapes/star.yaml — 10-vertex star outline
+# outer vertices: radius 1 at 90 + 72k deg; inner vertices: radius 0.382 at 126 + 72k deg
+name: star
+start: [0.0, 1.0]                  # top outer vertex
+segments:
+  - {type: line, to: [-0.224534, 0.309044]}
+  - {type: line, to: [-0.951057, 0.309017]}
+  - {type: line, to: [-0.363304, -0.118044]}
+  - {type: line, to: [-0.587785, -0.809017]}
+  - {type: line, to: [0.0, -0.382]}
+  - {type: line, to: [0.587785, -0.809017]}
+  - {type: line, to: [0.363304, -0.118044]}
+  - {type: line, to: [0.951057, 0.309017]}
+  - {type: line, to: [0.224534, 0.309044]}
+  - {type: line, to: [0.0, 1.0]}

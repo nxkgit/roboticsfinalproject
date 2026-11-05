@@ -1,0 +1,7 @@
+# shapes/triangle.yaml — equilateral triangle
+name: triangle
+start: [0.0, 0.0]
+segments:
+  - {type: line, to: [1.0, 0.0]}
+  - {type: line, to: [0.5, 0.866]}
+  - {type: line, to: [0.0, 0.0]}

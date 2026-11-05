@@ -1,0 +1,6 @@
+# shapes/figure8.yaml — upper loop counter-clockwise, lower loop clockwise
+name: figure8
+start: [0.0, 0.0]
+segments:
+  - {type: arc, center: [0.0, 0.5], sweep_deg: 360}
+  - {type: arc, center: [0.0, -0.5], sweep_deg: -360}
