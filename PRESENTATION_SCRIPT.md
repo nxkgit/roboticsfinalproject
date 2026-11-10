@@ -151,10 +151,63 @@ looked like a square.'"
 
 ## 9. Status / next steps
 
-"Next steps, in order: implement `shape_drawer`'s control loop against
-`fake_odom_sim`, validate with the unit tests and simulated runs described
-above, then work through the real-robot checklist slowly, starting with
-wheels off the ground."
+"Here's the order I'm planning to actually do this in — software fully
+validated in simulation before the real robot is involved at all:
+
+**Software (M3)**
+1. Write `fake_odom_sim` first — it's the smaller piece, and nothing else
+   can be tested without it.
+2. Write `shape_drawer`'s control loop against it: the planning/latched-path
+   publish, the `/odom` subscription, the P controller for position and
+   heading, waypoint advancement, and the abort paths (geofence, odometry
+   staleness, per-waypoint time budget).
+3. Add the `dry_run` mode and the `YES` confirmation gate before wiring up
+   the real `/cmd_vel` publisher — these are cheap to add early and remove a
+   whole class of 'oops it moved' mistakes later.
+
+**Recording & visualization (M4)**
+4. Write `path_recorder`: subscribe to `/odom`, buffer the actual path,
+   write the CSV + closure/cross-track metrics + the planned-vs-actual PNG
+   on completion.
+5. Write the two launch files (sim: `fake_odom_sim` + `shape_drawer` +
+   `path_recorder` [+ RViz]; real: `shape_drawer` + `path_recorder` only)
+   and an RViz config showing planned (blue) vs. actual (orange) path.
+
+**Simulated validation — still before the real robot**
+6. Run all six shapes through the sim at default settings; confirm each one
+   reports `done`, not an abort, and record closure/cross-track error per
+   shape.
+7. Re-run with deliberately injected wheel-calibration bias and odometry
+   noise (`fake_odom_sim`'s `linear_scale` / `noise_std` params) to check the
+   feedback loop actually corrects for imperfect odometry rather than just
+   working because the simulator is too clean.
+8. Confirm the negative cases on purpose: `dry_run` and an oversized `size:=`
+   request both report a refusal and create *no* `/cmd_vel` publisher
+   (checked by polling the ROS master); Ctrl-C, odometry loss, and a
+   geofence breach all abort with a zero `Twist`.
+
+**Real robot (M4, staged — stop at any failure)**
+9. Link check: robot powered and reachable, `rostopic info /cmd_vel` shows
+   the robot's own driver as a subscriber.
+10. Discover the real odometry topic/type and confirm heading actually
+    tracks a hand rotation of the robot — stop here if it doesn't, since
+    heading hold can't work without it.
+11. Measure the footprint radius by hand and cross-check it against the
+    base's URDF.
+12. `dry_run` on the real robot's parameters — sanity-check the usable box
+    and waypoint table before anything can move.
+13. Wheels off the ground, low speed — confirm the motion pattern and that
+    Ctrl-C stops it immediately.
+14. On the floor, low speed, small shape, with someone on Ctrl-C and someone
+    on the power switch.
+15. Tape-measure the real closure error and compare it against the
+    recorded/plotted odometry closure error — the gap between the two *is*
+    the real robot's dead-reckoning error, which is the number I don't have
+    yet.
+
+That last step is really the point of the whole real-robot phase: simulated
+closure error only tells me the control loop is correct, not how accurate
+the real robot's odometry is. Step 15 is where I'd actually find that out."
 
 ---
 
