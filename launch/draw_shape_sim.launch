@@ -1,0 +1,39 @@
+<!-- Simulation: fake odometry + shape_drawer + path_recorder (+ optional RViz).
+     Run with: source sim_env.sh && roslaunch beginner_tutorials draw_shape_sim.launch shape:=circle -->
+<launch>
+  <arg name="shape"        default="square"/>
+  <arg name="area_w"       default="1.5"/>
+  <arg name="area_h"       default="1.5"/>
+  <arg name="margin"       default="0.15"/>
+  <arg name="footprint_r"  default="0.15"/>
+  <arg name="size"         default="0.0"/>
+  <arg name="speed"        default="0.2"/>
+  <arg name="dry_run"      default="false"/>
+  <arg name="rviz"         default="false"/>
+  <!-- simulator error model and start pose in odom -->
+  <arg name="linear_scale" default="1.0"/>
+  <arg name="noise_std"    default="0.0"/>
+  <arg name="yaw0"         default="0.0"/>
+
+  <node pkg="beginner_tutorials" type="fake_odom_sim.py" name="fake_odom_sim" output="screen">
+    <param name="linear_scale" value="$(arg linear_scale)"/>
+    <param name="noise_std"    value="$(arg noise_std)"/>
+    <param name="yaw0"         value="$(arg yaw0)"/>
+  </node>
+
+  <node pkg="beginner_tutorials" type="shape_drawer.py" name="shape_drawer" output="screen" required="true">
+    <param name="shape"       value="$(arg shape)"/>
+    <param name="area_w"      value="$(arg area_w)"/>
+    <param name="area_h"      value="$(arg area_h)"/>
+    <param name="margin"      value="$(arg margin)"/>
+    <param name="footprint_r" value="$(arg footprint_r)"/>
+    <param name="size"        value="$(arg size)"/>
+    <param name="speed"       value="$(arg speed)"/>
+    <param name="dry_run"     value="$(arg dry_run)"/>
+  </node>
+
+  <node pkg="beginner_tutorials" type="path_recorder.py" name="path_recorder" output="screen"/>
+
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz"
+        args="-d $(find beginner_tutorials)/rviz/shapes.rviz"/>
+</launch>

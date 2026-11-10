@@ -1,0 +1,54 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz/Grid
+      Name: Grid
+      Enabled: true
+      Cell Size: 0.25
+      Plane Cell Count: 20
+      Reference Frame: <Fixed Frame>
+      Color: 160; 160; 164
+    - Class: rviz/Path
+      Name: Planned path
+      Enabled: true
+      Topic: /shape_drawer/planned_path
+      Color: 42; 120; 214
+      Line Style: Billboards
+      Line Width: 0.01
+      Alpha: 1
+    - Class: rviz/Path
+      Name: Actual path
+      Enabled: true
+      Topic: /path_recorder/actual_path
+      Color: 235; 104; 52
+      Line Style: Billboards
+      Line Width: 0.015
+      Alpha: 1
+    - Class: rviz/Odometry
+      Name: Odometry
+      Enabled: true
+      Topic: /odom
+      Keep: 1
+      Shape:
+        Value: Arrow
+  Enabled: true
+  Global Options:
+    Fixed Frame: odom
+    Background Color: 48; 48; 48
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/MoveCamera
+  Views:
+    Current:
+      Class: rviz/TopDownOrtho
+      Name: Current View
+      Scale: 300
+      X: 0
+      Y: 0
+Window Geometry:
+  Width: 1000
+  Height: 800
